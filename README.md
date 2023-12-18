@@ -1,5 +1,5 @@
 <h1 align="center">
-<img src="./src/plugins/view/icon/plugin-icon.ico?raw=true" />
+<img src="./src/plugins/view/icon/plugin-icon.jpg" />
 
 navigate-plugins
 <h2 align="center">
