@@ -1,5 +1,5 @@
 <h1 align="center">
-<img src="./src/plugins/view/icon/plugin-icon.jpg" />
+<img src="./src/plugins/view/icon/plugin-icon.jpg" width="200" height="200"/>
 
 navigate-plugins
 <h2 align="center">
@@ -7,8 +7,10 @@ navigate-plugins
 </h2>
 </h1>
 
+<!-- 
 [![Tests](https://github.com/TheDeanLab/navigate-plugins/actions/workflows/push_checks.yaml/badge.svg)](https://github.com/TheDeanLab/navigate-plugins/actions/workflows/push_checks.yaml)
 [![codecov](https://codecov.io/gh/TheDeanLab/navigate-plugins/branch/develop/graph/badge.svg?token=YOUR_TOKEN)](https://codecov.io/gh/TheDeanLab/navigate-plugins)
+-->
 
 Navigate-plugins is an open source collection of plugins for the Navigate Python package, enhancing the control and functionality of light-sheet microscopes. These plugins offer additional features, custom hardware support, and extended automation capabilities.
 
