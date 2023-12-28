@@ -1,29 +1,18 @@
 <h1 align="center">
 <img src="./src/plugins/view/icon/plugin-icon.jpg" width="200" height="200"/>
 
-navigate-plugins
+navigate-confocal-projection
 <h2 align="center">
-	open source plugins for navigate microscope control
+	A plugin for navigate, which enables high-speed confocal projection imaging with an oblique plane microscope. 
 </h2>
 </h1>
 
-<!-- 
-[![Tests](https://github.com/TheDeanLab/navigate-plugins/actions/workflows/push_checks.yaml/badge.svg)](https://github.com/TheDeanLab/navigate-plugins/actions/workflows/push_checks.yaml)
-[![codecov](https://codecov.io/gh/TheDeanLab/navigate-plugins/branch/develop/graph/badge.svg?token=YOUR_TOKEN)](https://codecov.io/gh/TheDeanLab/navigate-plugins)
--->
-
-navigate-confocal-projection is an open source navigate plugin. 
 
 ### Quick install
 
 Ensure you have navigate installed. If not, follow the installation instructions for Navigate.
 
 To install navigate-confocal-projection:
-
-```
-conda activate navigate
-pip install git+https://github.com/TheDeanLab/navigate-confocal-projection.git
-```
 
 ### Usage
 
