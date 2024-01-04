@@ -1,5 +1,5 @@
 <h1 align="center">
-<img src="./src/plugins/view/icon/plugin-icon.jpg" width="200" height="200"/>
+<img src="./plugin-icon.jpg" width="200" height="200"/>
 
 navigate-confocal-projection
 <h2 align="center">
