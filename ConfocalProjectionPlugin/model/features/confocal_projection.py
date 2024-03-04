@@ -127,6 +127,12 @@ class ConProAcquisition:
             exposure_times,
             sweep_times,
         ) = self.model.active_microscope.get_exposure_sweep_times()
+        remote_focus_delay = self.model.configuration["waveform_constants"][
+            "other_constants"
+        ]["remote_focus_delay"]
+        remote_focus_ramp_falling = self.model.configuration["waveform_constants"][
+            "other_constants"
+        ]["remote_focus_ramp_falling"]
 
         # calculate waveforms
         waveform_dict = {}
@@ -166,9 +172,9 @@ class ConProAcquisition:
                             sample_rate=galvo_stage.sample_rate,
                             exposure_time=exposure_time,
                             sweep_time=sweep_time,
-                            remote_focus_delay=galvo_stage.remote_focus_delay,
-                            camera_delay=galvo_stage.camera_delay_percent,
-                            fall=galvo_stage.remote_focus_ramp_falling,
+                            remote_focus_delay=remote_focus_delay,
+                            camera_delay=galvo_stage.camera_delay,
+                            fall=remote_focus_ramp_falling,
                             amplitude=amp,
                             offset=off,
                         )
