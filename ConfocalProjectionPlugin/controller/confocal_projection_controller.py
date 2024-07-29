@@ -32,7 +32,7 @@
 
 import tkinter as tk
 
-from navigate.controller.sub_controllers.gui_controller import GUIController
+from navigate.controller.sub_controllers.gui import GUIController
 
 
 class ConfocalProjectionController(GUIController):

@@ -129,10 +129,10 @@ class ConProAcquisition:
         ) = self.model.active_microscope.get_exposure_sweep_times()
         remote_focus_delay = self.model.configuration["waveform_constants"][
             "other_constants"
-        ]["remote_focus_delay"]
+        ]["remote_focus_delay"] / 1000
         remote_focus_ramp_falling = self.model.configuration["waveform_constants"][
             "other_constants"
-        ]["remote_focus_ramp_falling"]
+        ]["remote_focus_ramp_falling"] / 1000
 
         # calculate waveforms
         waveform_dict = {}

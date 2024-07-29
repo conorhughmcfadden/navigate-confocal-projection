@@ -38,24 +38,34 @@ from navigate.model.features.feature_related_functions import ConProAcquisition
 class ConfocalProjectionAcquisitionMode:
     def __init__(self, name):
         self.acquisition_mode = name
-        
+
         self.feature_list = [{"name": ConProAcquisition}]
 
     def prepare_acquisition_controller(self, controller):
         """Prepare acquisition in controller side
-        
+
         Parameters
         ----------
         controller : object
             navigate controller
         """
-        controller.configuration["experiment"]["MicroscopeState"][
-            "waveform_template"
-        ] = "Confocal-Projection"
+        microscope_setting_dict = controller.configuration["experiment"][
+            "MicroscopeState"
+        ]
+        microscope_setting_dict["waveform_template"] = "Confocal-Projection"
+
+        # backup stack cycling mode
+        self.stack_cycling_mode = microscope_setting_dict["stack_cycling_mode"]
+
+        microscope_setting_dict["stack_cycling_mode"] = (
+            "per_stack"
+            if microscope_setting_dict["conpro_cycling_mode"] == "per_stack"
+            else "per_z"
+        )
 
     def end_acquisition_controller(self, controller):
         """Cleanup in controller side after acquisition
-        
+
         Parameters
         ----------
         controller : object
@@ -65,6 +75,11 @@ class ConfocalProjectionAcquisitionMode:
             "waveform_template"
         ] = "Default"
 
+        # reset cycling mode
+        controller.configuration["experiment"]["MicroscopeState"][
+            "stack_cycling_mode"
+        ] = self.stack_cycling_mode
+
     def update_saving_config(self, model):
         """Update saving configuration (set the shaping metadata)
 
@@ -73,8 +88,4 @@ class ConfocalProjectionAcquisitionMode:
         model : object
             navigate model
         """
-        return {
-            "z": model.configuration["experiment"]["MicroscopeState"][
-                "n_plane"
-            ]
-        }
+        return {"z": model.configuration["experiment"]["MicroscopeState"]["n_plane"]}
