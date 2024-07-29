@@ -63,6 +63,11 @@ class ConfocalProjectionAcquisitionMode:
             else "per_z"
         )
 
+        # scan range
+        if microscope_setting_dict["scanrange"] <= 0:
+            microscope_setting_dict["scanrange"] = 1
+            print("Scan range shouldn't be 0! Please set the scan range value!")
+
     def end_acquisition_controller(self, controller):
         """Cleanup in controller side after acquisition
 
@@ -79,6 +84,12 @@ class ConfocalProjectionAcquisitionMode:
         controller.configuration["experiment"]["MicroscopeState"][
             "stack_cycling_mode"
         ] = self.stack_cycling_mode
+
+    def end_acquisition_model(self, model):
+        """Cleanup in model side after acquisition"""
+        for stage, _ in model.active_microscope.stages_list:
+            if type(stage).__name__ == "GalvoNIStage":
+                stage.switch_mode("normal")
 
     def update_saving_config(self, model):
         """Update saving configuration (set the shaping metadata)

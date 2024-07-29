@@ -72,10 +72,11 @@ class ConfocalProjectionController(GUIController):
 
         cycling = (
             "Per Stack"
-            if self.microscope_state_dict["conpro_cycling_mode"] == "per_stack"
+            if self.microscope_state_dict.get("conpro_cycling_mode", "") == "per_stack"
             else "Per Plane"
         )
         self.conpro_acq_vals["cycling"].set(cycling)
+        self.microscope_state_dict["conpro_cycling_mode"] = cycling
 
     def update_scanrange(self, *args):
         """Update scan range value in the controller
@@ -170,7 +171,8 @@ class ConfocalProjectionController(GUIController):
         """
         try:
             widget_value = float(self.microscope_state_dict[widget_name])
-        except:
+        except (KeyError, TypeError, ValueError):
             widget_value = 0
+            self.microscope_state_dict[widget_name] = 0
 
         self.conpro_acq_vals[widget_name].set(widget_value)
