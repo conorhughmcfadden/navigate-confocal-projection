@@ -3,9 +3,10 @@ name: deploy
 on:
   release:
   workflow_dispatch:
-
+  
 jobs:
   deploy:
+      runs-on: ${{ matrix.operating-system }}
       strategy:
         matrix:
           python-version: ["3.9"]
