@@ -24,12 +24,12 @@ jobs:
     
             [pypi]
             repository: https://upload.pypi.org/legacy/
-            username: __token__
+            username: $env:PYPI_USERNAME
             password: $env:TWINE_API_KEY
             
             [navigate-micro]
             repository: https://upload.pypi.org/legacy/
-            username: __token__
+            username: $env:PYPI_USERNAME
             password: $env:TWINE_API_KEY
             "@ | Set-Content -Path $env:USERPROFILE\.pypirc
         - name: Set up Python ${{ matrix.python-version }}
