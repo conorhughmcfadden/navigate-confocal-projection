@@ -132,6 +132,18 @@ class ConfocalProjectionFrame(ttk.Labelframe):
         self.inputs["offset_end"].grid(row=1, column=3, sticky="N", padx=6)
         self.inputs["offset_end"].label.grid(sticky="N")
 
+        # Shear galvo amplitude
+        self.shear_amp = ttk.Label(self.pos_slice, text="Shear Amp:")
+        self.shear_amp.grid(row=0, column=4, sticky="S")
+        self.inputs["shear_amp"] = LabelInput(
+            parent=self.pos_slice,
+            input_class=ValidatedSpinbox,
+            input_var=tk.DoubleVar(),
+            input_args={"from_": -10.0, "to": 10, "increment": 0.01, "width": 6},
+        )
+        self.inputs["shear_amp"].grid(row=0, column=5, sticky="N", padx=6)
+        self.inputs["shear_amp"].label.grid(sticky="N")
+
         # Laser Cycling Settings
         self.inputs["cycling"] = LabelInput(
             parent=self.cycling,

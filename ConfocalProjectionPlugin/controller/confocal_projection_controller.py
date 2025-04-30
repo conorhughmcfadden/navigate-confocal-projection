@@ -59,6 +59,7 @@ class ConfocalProjectionController(GUIController):
             "write", self.update_offset_start
         )
         self.conpro_acq_vals["offset_end"].trace_add("write", self.update_offset_end)
+        self.conpro_acq_vals["shear_amp"].trace_add("write", self.update_shear_amp)
 
     def populate_experiment_setting(self):
         """Populate experiment"""
@@ -77,6 +78,12 @@ class ConfocalProjectionController(GUIController):
         )
         self.conpro_acq_vals["cycling"].set(cycling)
         self.microscope_state_dict["conpro_cycling_mode"] = cycling
+
+    def update_shear_amp(self, *args):
+
+        shear_amp = float(self.conpro_acq_vals["shear_amp"].get())
+
+        self.microscope_state_dict["shear_amp"] = shear_amp
 
     def update_scanrange(self, *args):
         """Update scan range value in the controller

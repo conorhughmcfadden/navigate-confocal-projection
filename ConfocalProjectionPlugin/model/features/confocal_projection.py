@@ -72,6 +72,8 @@ class ConProAcquisition:
         #: str: Stage Axis
         self.axis = axis
 
+        self.exposure_times = None
+        self.sweep_times = None
 
         #: float: The number of planes for confocal projection acquisition.
         self.n_plane = 0
@@ -101,6 +103,20 @@ class ConProAcquisition:
             "node": {"node_type": "multi-step", "device_related": True},
         }
 
+    def set_shear_amplitude(self, amp, galvo_num=0):
+
+        zoom = self.model.configuration["experiment"]["MicroscopeState"]["zoom"]
+        microscope_name = self.model.configuration["experiment"]["MicroscopeState"]["microscope_name"]
+        
+        self.model.configuration["waveform_constants"]["galvo_constants"][
+            f"Galvo {galvo_num}"
+        ][microscope_name][zoom]["amplitude"] = amp
+
+        self.model.active_microscope.galvo[f"galvo_{galvo_num}"].adjust(
+            self.exposure_times, 
+            self.sweep_times
+            )
+
     def pre_signal_func(self):
         """Initialize continuous acquisition parameters before the signal stage.
 
@@ -124,8 +140,8 @@ class ConProAcquisition:
         galvo_stage = self.model.active_microscope.stages[self.axis]
         sample_rate = galvo_stage.sample_rate
         (
-            exposure_times,
-            sweep_times,
+            self.exposure_times,
+            self.sweep_times,
         ) = self.model.active_microscope.get_exposure_sweep_times()
         remote_focus_delay = float(self.model.configuration["waveform_constants"][
             "other_constants"
@@ -145,8 +161,8 @@ class ConProAcquisition:
 
                 # Get the Waveform Parameters
                 # Assumes Remote Focus Delay < Camera Delay.  Should Assert.
-                exposure_time = exposure_times[channel_key]
-                sweep_time = sweep_times[channel_key]
+                exposure_time = self.exposure_times[channel_key]
+                sweep_time = self.sweep_times[channel_key]
 
                 samples = int(sample_rate * sweep_time)
 
@@ -187,6 +203,11 @@ class ConProAcquisition:
                     f"samples: {samples}"
                 )
         galvo_stage.update_waveform(waveform_dict)
+
+        # set shear galvo amplitude
+        shear_amp = microscope_state["shear_amp"]
+        self.set_shear_amplitude(shear_amp)
+        
         # stop current daq ao tasks
         self.model.active_microscope.daq.stop_acquisition()
 
@@ -223,6 +244,9 @@ class ConProAcquisition:
         bool
             A boolean value indicating whether to end the current node.
         """
+        # zero shear galvo
+        # self.set_shear_amplitude(0, galvo_num=0)
+
         # end this node
         if self.model.stop_acquisition:
             self.model.configuration["experiment"]["MicroscopeState"][
@@ -274,6 +298,9 @@ class ConProAcquisition:
         return self.received_frames >= self.total_frames
 
     def cleanup(self):
+        # set shear galvo amplitude
+        self.set_shear_amplitude(0, galvo_num=0)
+
         self.model.configuration["experiment"]["MicroscopeState"][
             "waveform_template"
         ] = "Default"
